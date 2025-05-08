@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Premium - Cassino Elegante</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="message-container" id="message-container"></div>
+    
+    <div class="table-controls">
+        <button id="new-game-btn">Novo Jogo</button>
+        <select id="table-color">
+            <option value="#0a5c36">Verde Clássico</option>
+            <option value="#1a3a5f">Azul Royal</option>
+            <option value="#5c0a0a">Vermelho Vinho</option>
+            <option value="#333333">Preto Elegante</option>
+        </select>
+        <button id="add-player-btn">+ Jogador</button>
+    </div>
+
+    <div class="table-container" id="game-table">
+        <div class="dealer-area">
+            <h2>Dealer</h2>
+            <div class="cards" id="dealer-cards"></div>
+            <div class="score" id="dealer-score"></div>
+        </div>
+
+        <div class="players-container" id="players-container">
+            <!-- Jogadores serão adicionados aqui dinamicamente -->
+        </div>
+    </div>
+
+    <div class="game-controls">
+        <button id="hit-btn">Hit</button>
+        <button id="stand-btn">Stand</button>
+        <button id="double-btn">Double</button>
+        <button id="split-btn">Split</button>
+    </div>
+
+    <div class="count-display">
+        Contagem de Cartas: <span id="count-value">0</span>
+    </div>
+
+    <script src="js/deck.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
