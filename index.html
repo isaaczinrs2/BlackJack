@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blackjack Premium - Cassino Elegante</title>
+    <title>Blackjack Premium</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,25 +18,27 @@
             <option value="#333333">Preto Elegante</option>
         </select>
         <button id="add-player-btn">+ Jogador</button>
+        <div class="total-bet" id="total-bet">Aposta Total: 0</div>
     </div>
 
     <div class="table-container" id="game-table">
         <div class="dealer-area">
+            <div class="dealer-avatar">👔</div>
             <h2>Dealer</h2>
             <div class="cards" id="dealer-cards"></div>
             <div class="score" id="dealer-score"></div>
         </div>
 
         <div class="players-container" id="players-container">
-            <!-- Jogadores serão adicionados aqui dinamicamente -->
+            <!-- Jogadores serão adicionados aqui -->
         </div>
     </div>
 
     <div class="game-controls">
-        <button id="hit-btn">Hit</button>
-        <button id="stand-btn">Stand</button>
-        <button id="double-btn">Double</button>
-        <button id="split-btn">Split</button>
+        <button id="hit-btn">Pedir</button>
+        <button id="stand-btn">Parar</button>
+        <button id="double-btn">Dobrar</button>
+        <button id="split-btn">Dividir</button>
     </div>
 
     <div class="count-display">

@@ -5,6 +5,7 @@ class BlackjackGame {
         this.players = [];
         this.currentPlayerIndex = 0;
         this.gameState = 'waiting';
+        this.totalBet = 0;
     }
 
     addPlayer(name) {
@@ -24,6 +25,7 @@ class BlackjackGame {
 
         this.deck.reset();
         this.dealer.clearHand();
+        this.totalBet = 0;
         
         for (let player of this.players) {
             player.clearHand();
@@ -73,11 +75,8 @@ class BlackjackGame {
 
     dealerTurn() {
         this.gameState = 'dealer-turn';
-        
-        // Revelar a carta oculta
         this.dealer.calculateScore();
         
-        // Regras do dealer: hit até 16, stand em 17 ou mais
         while (this.dealer.score < 17 && !this.dealer.bust) {
             this.dealer.addCard(this.deck.dealCard());
         }
@@ -89,8 +88,11 @@ class BlackjackGame {
     determineWinners() {
         const dealerScore = this.dealer.score;
         const dealerBust = this.dealer.bust;
+        this.totalBet = 0;
         
         for (let player of this.players) {
+            this.totalBet += player.bet;
+            
             if (player.bust) {
                 continue;
             }
@@ -105,6 +107,28 @@ class BlackjackGame {
                 player.push();
             }
         }
+        
+        return this.getWinners();
+    }
+
+    getWinners() {
+        const winners = [];
+        for (let player of this.players) {
+            if (!player.bust && (this.dealer.bust || player.score > this.dealer.score)) {
+                winners.push(player);
+            } else if (player.score === this.dealer.score && !player.bust) {
+                winners.push({player, result: 'push'});
+            }
+        }
+        return winners;
+    }
+
+    resetTable() {
+        this.dealer.clearHand();
+        this.players.forEach(player => player.clearHand());
+        this.currentPlayerIndex = 0;
+        this.totalBet = 0;
+        this.gameState = 'waiting';
     }
 
     getCurrentPlayer() {
@@ -124,5 +148,13 @@ class BlackjackGame {
                player.hand.length === 2 && 
                player.chips >= player.bet &&
                !player.hasBlackjack;
+    }
+
+    canSplit() {
+        const player = this.getCurrentPlayer();
+        return player && 
+               player.hand.length === 2 && 
+               player.hand[0].value === player.hand[1].value &&
+               player.chips >= player.bet;
     }
 }

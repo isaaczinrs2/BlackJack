@@ -7,7 +7,7 @@ class Player {
         this.bust = false;
         this.stand = false;
         this.bet = 0;
-        this.chips = isDealer ? 0 : 1000;
+        this.chips = isDealer ? 0 : 5000;
         this.hasBlackjack = false;
     }
 
@@ -15,7 +15,6 @@ class Player {
         this.hand.push(card);
         this.calculateScore();
         
-        // Verificar blackjack
         if (this.hand.length === 2 && this.score === 21 && !this.isDealer) {
             this.hasBlackjack = true;
         }
@@ -63,14 +62,19 @@ class Player {
     }
 
     win(bj = false) {
-        const winAmount = bj ? Math.floor(this.bet * 2.5) : this.bet * 2;
-        this.chips += winAmount;
+        let winAmount = this.bet * 2;
+        if (bj) {
+            winAmount = Math.floor(this.bet * 2.5);
+        }
+        this.chips += winAmount + this.bet;
+        const profit = winAmount;
         this.bet = 0;
-        return winAmount;
+        return profit;
     }
 
     push() {
         this.chips += this.bet;
         this.bet = 0;
+        return 0;
     }
 }

@@ -14,6 +14,9 @@ class BlackjackUI {
     initEventListeners() {
         document.getElementById('new-game-btn').addEventListener('click', () => this.startNewGame());
         document.getElementById('add-player-btn').addEventListener('click', () => this.addPlayer());
+        document.getElementById('table-color').addEventListener('change', (e) => {
+            this.table.style.backgroundColor = e.target.value;
+        });
         
         document.getElementById('hit-btn').addEventListener('click', () => {
             if (this.game.gameState === 'playing') {
@@ -36,6 +39,12 @@ class BlackjackUI {
                 this.game.hit();
                 this.game.stand();
                 this.updateUI();
+            }
+        });
+        
+        document.getElementById('split-btn').addEventListener('click', () => {
+            if (this.game.gameState === 'playing' && this.game.canSplit()) {
+                this.showMessage("Divisão de mãos será implementada na próxima versão!");
             }
         });
     }
@@ -75,7 +84,6 @@ class BlackjackUI {
             return;
         }
         
-        // Coletar apostas
         let allBetsValid = true;
         this.game.players.forEach(player => {
             let bet;
@@ -93,7 +101,7 @@ class BlackjackUI {
         });
         
         if (!allBetsValid) {
-            this.game.startNewGame(); // Resetar se alguma aposta for inválida
+            this.game.startNewGame();
             return;
         }
         
@@ -107,6 +115,38 @@ class BlackjackUI {
         this.updatePlayers();
         this.updateCount();
         this.updateControls();
+        
+        document.getElementById('total-bet').textContent = `Aposta Total: ${this.game.totalBet}`;
+            
+        if (this.game.gameState === 'game-over') {
+            const winners = this.game.determineWinners();
+            this.showWinnerNotification(winners);
+        }
+    }
+
+    showWinnerNotification(winners) {
+        let message = '';
+        
+        if (winners.length === 0) {
+            message = 'Dealer venceu todas as mãos!';
+        } else {
+            const winnerNames = winners.map(winner => {
+                if (winner.result === 'push') {
+                    return `${winner.player.name} (Empate)`;
+                }
+                return `${winner.player.name} (Ganhou ${winner.player.hasBlackjack ? 'Blackjack!' : ''})`;
+            }).join(', ');
+            
+            message = `Vencedores: ${winnerNames}`;
+        }
+        
+        this.showMessage(message, 5000);
+        
+        setTimeout(() => {
+            this.game.resetTable();
+            this.updateUI();
+            this.showMessage("Faça suas apostas para a próxima rodada!");
+        }, 5000);
     }
 
     updateDealer() {
@@ -169,7 +209,7 @@ class BlackjackUI {
                 scoreElement.textContent += ' BLACKJACK!';
                 scoreElement.classList.add('blackjack');
             } else if (player.stand) {
-                scoreElement.textContent += ' STAND';
+                scoreElement.textContent += ' PAROU';
             }
         });
     }
@@ -205,16 +245,15 @@ class BlackjackUI {
     }
 
     updateCount() {
-        this.countValue.textContent = this.game.getCount();
-        
-        // Mudar cor baseado na contagem
         const count = this.game.getCount();
+        this.countValue.textContent = count;
+        
         if (count > 0) {
-            this.countValue.style.color = '#4CAF50'; // Verde
+            this.countValue.style.color = '#4CAF50';
         } else if (count < 0) {
-            this.countValue.style.color = '#F44336'; // Vermelho
+            this.countValue.style.color = '#F44336';
         } else {
-            this.countValue.style.color = '#FFD700'; // Dourado
+            this.countValue.style.color = '#FFD700';
         }
     }
 
@@ -222,9 +261,11 @@ class BlackjackUI {
         const hitBtn = document.getElementById('hit-btn');
         const standBtn = document.getElementById('stand-btn');
         const doubleBtn = document.getElementById('double-btn');
+        const splitBtn = document.getElementById('split-btn');
         
         hitBtn.disabled = this.game.gameState !== 'playing';
         standBtn.disabled = this.game.gameState !== 'playing';
         doubleBtn.disabled = !(this.game.gameState === 'playing' && this.game.canDouble());
+        splitBtn.disabled = !(this.game.gameState === 'playing' && this.game.canSplit());
     }
 }
