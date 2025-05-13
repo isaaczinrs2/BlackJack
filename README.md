@@ -20,7 +20,6 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico, combinando conc
   - Animações CSS personalizadas
   - Lógica completa de regras do Blackjack
   - Gerenciamento de estado do jogo
-  - Efeitos sonoros (opcional)
 
 ## **Integrantes do Projeto**
 👥 **Equipe de Desenvolvimento**:
