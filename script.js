@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const trueCountEl = document.getElementById('true-count');
     const runningCountEl = document.getElementById('running-count');
     const cardsRemainingEl = document.getElementById('cards-remaining');
+    const winSound = document.getElementById('win-sound');
+    const loseSound = document.getElementById('lose-sound');
+    const cardSound = document.getElementById('card-sound');
+    const chipSound = document.getElementById('chip-sound');
+    const shuffleSound = document.getElementById('shuffle-sound');
 
     // Estado do jogo
     let bankroll = 1000;
