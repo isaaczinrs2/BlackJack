@@ -109,6 +109,7 @@ html, body {
     display: flex;
     position: relative;
     height: 40px;
+    width: 50%;
 }
 
 .chip {
